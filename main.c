@@ -41,7 +41,7 @@ int main(int argc, char* argv[])
 {
     FILE *fp = NULL;
     BOOL serviceIsCreated = FALSE;
-    DWORD ret = EXIT_SUCCESS;
+    DWORD ret = EXIT_SUCCESS, i = 0;
     BOOL status = TRUE;
     SC_HANDLE hServMngr = NULL, hServ = NULL;
     SERVICE_TABLE_ENTRY servTableEntry[] =
@@ -97,7 +97,7 @@ int main(int argc, char* argv[])
     printf("\t - Service Desc   : '%s'\n", globalConfiguration.serviceDesc);
     printf("\t - Output Dir     : '%s'\n", globalConfiguration.outputPath);
     printf("\t - Number pattern :  %d \n", globalConfiguration.nbPattern);
-    for(unsigned int i = 0; i < globalConfiguration.nbPattern; ++i)
+    for(; i < globalConfiguration.nbPattern; ++i)
         printf("\t\t - Patterns       : '%s'\n", globalConfiguration.patterns[i]);
     printf("\t - File max size  :  %d \n", globalConfiguration.max_size);
 
