@@ -1,0 +1,72 @@
+# depslib dependency file v1.0
+1289481218 source:c:\users\0vercl0k\desktop\jollydump3r\service.c
+	"service.h"
+	"debug.h"
+	"usb.h"
+	<dbt.h>
+
+1289480744 c:\users\0vercl0k\desktop\jollydump3r\service.h
+	<windows.h>
+	"global.h"
+
+1288616348 c:\users\0vercl0k\desktop\jollydump3r\debug.h
+	<stdio.h>
+	<windows.h>
+
+1287328024 source:c:\users\0vercl0k\desktop\jollydump3r\main.c
+	<windows.h>
+	<string.h>
+	"debug.h"
+	"service.h"
+
+1289339266 c:\users\0vercl0k\desktop\jollydump3r\main.h
+
+1288616449 source:c:\users\0vercl0k\desktop\jollydump3r\debug.c
+	"debug.h"
+	<string.h>
+
+1289474626 c:\users\0vercl0k\desktop\jollydump3r\usb.h
+	<windows.h>
+	"global.h"
+
+1289474698 source:c:\users\0vercl0k\desktop\jollydump3r\usb.c
+	"usb.h"
+	"debug.h"
+
+1289496393 source:c:\users\0vercl0k\desktop\jollydump3r\main.cpp
+	<windows.h>
+	<string.h>
+	"main.h"
+	"debug.h"
+	"service.h"
+	"color_shell.h"
+	"ini.h"
+	"global.h"
+
+1288528505 c:\users\0vercl0k\desktop\jollydump3r\ncurse_wrapper.hpp
+	<curses.h>
+
+1288528514 source:c:\users\0vercl0k\desktop\jollydump3r\ncurse_wrapper.cpp
+	<string.h>
+	"ncurse_wrapper.hpp"
+
+1288614547 c:\users\0vercl0k\desktop\jollydump3r\color_shell.h
+	<windows.h>
+
+1288548686 source:c:\users\0vercl0k\desktop\jollydump3r\color_shell.c
+	"color_shell.h"
+	<windows.h>
+
+1289430044 source:c:\users\0vercl0k\desktop\jollydump3r\ini.c
+	"ini.h"
+	"debug.h"
+
+1289497608 c:\users\0vercl0k\desktop\jollydump3r\ini.h
+	<windows.h>
+	"global.h"
+
+1289480616 c:\users\0vercl0k\desktop\jollydump3r\global.h
+
+1289480669 source:c:\users\0vercl0k\desktop\jollydump3r\global.c
+	"global.h"
+

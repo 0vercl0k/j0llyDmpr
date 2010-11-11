@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="JollyDump3r" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Release">
+				<Option output="bin\Release\JollyDump3r" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Release\" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-w" />
+					<Add option="-Wall" />
+					<Add option="-DDEBUG" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="color_shell.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="color_shell.h" />
+		<Unit filename="debug.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="debug.h" />
+		<Unit filename="global.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="global.h" />
+		<Unit filename="ini.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ini.h" />
+		<Unit filename="main.cpp" />
+		<Unit filename="main.h" />
+		<Unit filename="service.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="service.h" />
+		<Unit filename="usb.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="usb.h" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

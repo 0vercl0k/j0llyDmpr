@@ -1,0 +1,7 @@
+[service_configuration]
+name="JollyDumper"
+desc="USB File dumper by 0vercl0k (0vercl0k.tuxfamily.org)."
+[main_configuration]
+patterns=".doc"
+max_size=1000
+output_dir="C:\DUMPED\"
