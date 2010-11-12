@@ -29,8 +29,7 @@
 
 /**
 
-    TODO : - Remettre la couleur originel lors du closecolor();
-           - Faire en sorte que la comparaison soit case NON-sensitive
+    TODO : - Faire en sorte que la comparaison soit case NON-sensitive
            - Ajouter le nombre de niveau de recursion dans la config
            - Homogeniser le code
 **/
@@ -167,6 +166,7 @@ int main(int argc, char* argv[])
 
     clean:
     CloseDbgManager();
+    closeColor();
 
     if(hServ != NULL)
         CloseHandle(hServ);

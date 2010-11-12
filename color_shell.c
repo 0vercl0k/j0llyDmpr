@@ -37,3 +37,14 @@ VOID setColor(const COLOR fg)
         FOREGROUND_INTENSITY|fg
     );
 }
+
+VOID closeColor()
+{
+    if(hStdOut == NULL)
+        return;
+
+    SetConsoleTextAttribute(
+        hStdOut,
+        White
+    );
+}
