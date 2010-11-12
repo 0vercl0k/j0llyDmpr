@@ -29,16 +29,18 @@ BOOL initConfigurationStructure(PCONFIG pConf)
         {SERVICE_CONFIGURATION_SECTION, "desc"},
         {MAIN_CONFIGURATION_SECTION   , "output_dir"},
         {MAIN_CONFIGURATION_SECTION   , "max_size"},
+        {MAIN_CONFIGURATION_SECTION   , "recurse_max"},
         {NULL, NULL}
     },
     **ptrStr[] = {
-        &pConf->serviceName, &pConf->serviceDesc, &pConf->outputPath, &pConf->max_size
+        &pConf->serviceName, &pConf->serviceDesc, &pConf->outputPath, &pConf->max_size, &pConf->recurse_max
     },
     *defaultValues[] = {
         DEFAULT_SERVICE_NAME,
         DEFAULT_SERVICE_DESC,
         DEFAULT_OUTPUT_DIR,
-        DEFAULT_FILE_MAX_SIZE
+        DEFAULT_FILE_MAX_SIZE,
+        DEFAULT_RECURSE_MAX_LEVEL
     };
 
     ZeroMemory(pConf, sizeof(CONFIG));
@@ -75,6 +77,10 @@ BOOL initConfigurationStructure(PCONFIG pConf)
 
     tmp2 = (char*)pConf->max_size;
     pConf->max_size = atoi(tmp2);
+    free(tmp2);
+
+    tmp2 = (char*)pConf->recurse_max;
+    pConf->recurse_max = atoi(tmp2);
     free(tmp2);
 
     if(pConf->outputPath[strlen(pConf->outputPath) - 1] != '\\')
@@ -191,6 +197,7 @@ BOOL createConfigurationFile()
     fprintf(fp, "[%s]\n", MAIN_CONFIGURATION_SECTION);
     fprintf(fp, "patterns=\"%s\"\n", DEFAULT_PATTERN);
     fprintf(fp, "max_size=%u\n", DEFAULT_FILE_MAX_SIZE);
+    fprintf(fp, "recurse_max=%u\n", DEFAULT_RECURSE_MAX_LEVEL);
     fprintf(fp, "output_dir=\"%s\"\n", DEFAULT_OUTPUT_DIR);
 
     fclose(fp);

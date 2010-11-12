@@ -22,14 +22,14 @@
 
 typedef struct
 {
-    char *serviceName;
-    char *serviceDesc;
+    char *serviceName,
+        *serviceDesc,
+        *outputPath,
+        **patterns;
 
-    unsigned char nbPattern;
-    char **patterns;
-    unsigned int max_size;
-
-    char *outputPath;
+    unsigned int max_size,
+        nbPattern,
+        recurse_max;
 }CONFIG,
 *PCONFIG;
 

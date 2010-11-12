@@ -30,7 +30,6 @@
 /**
 
     TODO : - Faire en sorte que la comparaison soit case NON-sensitive
-           - Ajouter le nombre de niveau de recursion dans la config
            - Homogeniser le code
 **/
 
@@ -95,10 +94,11 @@ int main(int argc, char* argv[])
     printf("\t - Service Name   : '%s'\n", globalConfiguration.serviceName);
     printf("\t - Service Desc   : '%s'\n", globalConfiguration.serviceDesc);
     printf("\t - Output Dir     : '%s'\n", globalConfiguration.outputPath);
-    printf("\t - Number pattern :  %d \n", globalConfiguration.nbPattern);
+    printf("\t - Number pattern :  %u \n", globalConfiguration.nbPattern);
     for(; i < globalConfiguration.nbPattern; ++i)
         printf("\t\t - Patterns       : '%s'\n", globalConfiguration.patterns[i]);
-    printf("\t - File max size  :  %d \n", globalConfiguration.max_size);
+    printf("\t - File max size  :  %u \n", globalConfiguration.max_size);
+    printf("\t - Recursion lvls :  %u \n", globalConfiguration.recurse_max);
 
     if(OpenService(OpenSCManager(NULL, NULL, GENERIC_EXECUTE), globalConfiguration.serviceName, GENERIC_EXECUTE) == NULL)
     {

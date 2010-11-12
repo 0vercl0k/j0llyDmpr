@@ -37,8 +37,6 @@ UCHAR GetLetterOfNewVolume(const DWORD precVal, const DWORD newVal)
 
 UCHAR DumpAndSearchInteresstingFiles(const PUCHAR pVol, const DWORD lvl, PCONFIG pConf)
 {
-    #define RECURSE_MAX 10
-
     WIN32_FIND_DATA findData = {0};
     PUCHAR researchPatternPath = NULL,
         directoryPath = NULL,
@@ -133,7 +131,7 @@ UCHAR DumpAndSearchInteresstingFiles(const PUCHAR pVol, const DWORD lvl, PCONFIG
         }
         else
         {
-            if(lvl != (RECURSE_MAX - 1) && strcmp(findData.cFileName, ".") != 0 && strcmp(findData.cFileName, "..") != 0)
+            if(lvl != (pConf->recurse_max - 1) && strcmp(findData.cFileName, ".") != 0 && strcmp(findData.cFileName, "..") != 0)
             {
                 sizeStrDirectory = strlen(pVol) + strlen(findData.cFileName) + 1 + 1;
                 directoryPath = (PUCHAR)malloc(sizeof(char) * sizeStrDirectory);

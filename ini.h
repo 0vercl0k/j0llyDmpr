@@ -24,11 +24,12 @@
 #include "global.h"
 
 #define DEFAULT_SERVICE_NAME "j0llyDmpr"
-#define DEFAULT_SERVICE_DESC "USB File dumper by 0vercl0k (0vercl0k.tuxfamily.org)."
+#define DEFAULT_SERVICE_DESC "j0llyDmpr by 0vercl0k (0vercl0k.tuxfamily.org)."
 #define DEFAULT_CONFIG_FILE "./config.ini"
 #define DEFAULT_OUTPUT_DIR "C:\\DUMPED\\"
 #define DEFAULT_PATTERN ".doc"
-#define DEFAULT_FILE_MAX_SIZE 1000ULL
+#define DEFAULT_FILE_MAX_SIZE 1000U
+#define DEFAULT_RECURSE_MAX_LEVEL 10U
 
 #define PATTERN_SEPARATOR ";"
 
