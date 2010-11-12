@@ -30,6 +30,7 @@
 /**
 
     TODO : - Faire en sorte que la comparaison soit case NON-sensitive
+           - Ameliorer les macros de debug / trace
            - Homogeniser le code
 **/
 
@@ -37,11 +38,10 @@
 
 int main(int argc, char* argv[])
 {
-    FILE *fp = NULL;
-    BOOL serviceIsCreated = FALSE;
-    DWORD ret = EXIT_SUCCESS, i = 0;
-    BOOL status = TRUE;
     SC_HANDLE hServMngr = NULL, hServ = NULL;
+    DWORD ret = EXIT_SUCCESS, i = 0;
+    FILE *fp = NULL;
+    BOOL status = TRUE, serviceIsCreated = FALSE;
     SERVICE_TABLE_ENTRY servTableEntry[] =
         {
             {

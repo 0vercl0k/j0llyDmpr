@@ -231,8 +231,8 @@ VOID WINAPI servMain(DWORD dwArgc, LPTSTR *lpszArgv)
 DWORD WINAPI ctrlHandler(DWORD fdwControl, DWORD evtype, PVOID evdata, PVOID Context)
 {
     PDEV_BROADCAST_VOLUME pBroadVol = (PDEV_BROADCAST_VOLUME)evdata;
-    DWORD tmp = GetLogicalDrives();
     PCONFIG pConf = (PCONFIG)Context;
+    DWORD tmp = GetLogicalDrives();
     UCHAR str[4] = {0, ':', '\\', 0}, letter = 0, ret = 0;
 
     switch(fdwControl)
