@@ -29,8 +29,7 @@
 
 /**
 
-    TODO : - Faire en sorte que la comparaison soit case NON-sensitive
-           - Ameliorer les macros de debug / trace
+    TODO : - Ameliorer les macros de debug / trace
            - Homogeniser le code
 **/
 

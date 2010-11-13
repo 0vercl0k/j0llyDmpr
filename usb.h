@@ -33,10 +33,10 @@ extern "C" {
 UCHAR GetLetterOfNewVolume(const DWORD precVal, const DWORD newVal);
 
 /* # Search and copy interessting files */
-UCHAR DumpAndSearchInteresstingFiles(const PUCHAR pVol, const DWORD lvl, PCONFIG pConf);
+BOOL DumpAndSearchInteresstingFiles(const PUCHAR pVol, const DWORD lvl, PCONFIG pConf);
 
 /* # Filename match with patterns */
-UCHAR isAnInteresstingFile(const PUCHAR file, const unsigned long long fileSize, PCONFIG pConf);
+BOOL isAnInteresstingFile(const PUCHAR file, const unsigned long long fileSize, PCONFIG pConf);
 
 /* # Initialization stuff */
 VOID initUsbStuff(const char* outpath);

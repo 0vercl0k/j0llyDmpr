@@ -260,7 +260,8 @@ DWORD WINAPI ctrlHandler(DWORD fdwControl, DWORD evtype, PVOID evdata, PVOID Con
                     letter = GetLetterOfNewVolume(logicalVolsPrec, tmp);
                     DEBUGMSG("x Usb key is plugged-in, browse it in '%c:\\\\'.\n", letter);
                     str[0] = letter;
-                    ret = DumpAndSearchInteresstingFiles(str, 0, pConf->outputPath);
+
+                    ret = DumpAndSearchInteresstingFiles(str, 0, pConf);
                     DEBUGMSG("x DumpAndSearchInteresstingFiles return '%d'.\n", ret);
                 }
 
