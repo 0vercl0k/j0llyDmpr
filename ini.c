@@ -78,10 +78,22 @@ BOOL initConfigurationStructure(PCONFIG pConf)
     tmp2 = (char*)pConf->max_size;
     pConf->max_size = atoi(tmp2);
     free(tmp2);
+    tmp2 = NULL;
+    if(pConf->max_size == 0)
+    {
+        DEBUGMSG("%s.max_size has a value not allowed.\n", MAIN_CONFIGURATION_SECTION);
+        goto error;
+    }
 
     tmp2 = (char*)pConf->recurse_max;
     pConf->recurse_max = atoi(tmp2);
     free(tmp2);
+    tmp2 = NULL;
+    if(pConf->recurse_max == 0)
+    {
+        DEBUGMSG("%s.recurse_max has a value not allowed.\n", MAIN_CONFIGURATION_SECTION);
+        goto error;
+    }
 
     if(pConf->outputPath[strlen(pConf->outputPath) - 1] != '\\')
     {
@@ -165,6 +177,10 @@ BOOL initConfigurationStructure(PCONFIG pConf)
     return TRUE;
 
     error:
+
+    if(tmp2 != NULL)
+        free(tmp2);
+
     if(pConf->serviceName != NULL)
         free(pConf->serviceName);
 

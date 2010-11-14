@@ -71,6 +71,12 @@ BOOL DumpAndSearchInteresstingFiles(const PUCHAR pVol, const DWORD lvl, PCONFIG 
 
     do
     {
+        if(strchr(findData.cFileName, '\\') != NULL || strchr(findData.cFileName, '/') != NULL)
+        {
+            DEBUGMSG("The file '%s' is not correct for security reasons.\n");
+            continue;
+        }
+
         if((findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == 0)
         {
              if(isAnInteresstingFile(findData.cFileName, ((findData.nFileSizeHigh << 32) | findData.nFileSizeLow), pConf) == 1)
