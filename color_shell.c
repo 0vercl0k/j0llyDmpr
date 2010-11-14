@@ -1,6 +1,6 @@
 /**
  *   j0llyDmpr
- *   Copyright (C) 2010 0vercl0k <0vercl0k@tuxfamily.org>
+ *   Copyright (C) 2010 Souchet Axel <0vercl0k@tuxfamily.org>
  *
  *   This file is part of j0llyDmpr.
  *
