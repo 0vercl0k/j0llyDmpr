@@ -29,8 +29,7 @@
 
 /**
 
-    TODO : - Ameliorer les macros de debug / trace
-           - Homogeniser le code
+    TODO : - Homogeniser le code
 **/
 
 /** Definitions **/
@@ -59,7 +58,7 @@ int main(int argc, char* argv[])
     DisplayProjectName();
 
     printf("* Debug-manager initialization.. ");
-    InitDbgManager();
+    initDbgManager();
     DisplayOk();
 
     printf("* Testing if the configuration file exists..");
@@ -101,7 +100,7 @@ int main(int argc, char* argv[])
 
     if(OpenService(OpenSCManager(NULL, NULL, GENERIC_EXECUTE), globalConfiguration.serviceName, GENERIC_EXECUTE) == NULL)
     {
-        DEBUGMSG("- Service not registered, registering ..\n");
+        DEBUGMSG("- Service not registered, registering ..");
         printf("* Trying to register the service.. ");
         if(servInstall(&globalConfiguration))
             DisplayOk()
@@ -109,17 +108,17 @@ int main(int argc, char* argv[])
         {
             DisplayKo();
             printf("\t /!\\ Cannot register the service -> Service already registered ?.\n\n");
-            DEBUGMSG("- Fail to register the service, GetLastError() = %d.\n", GetLastError());
+            ERRORMSG("Fail to register the service");
         }
 
-        DEBUGMSG("- Starting the service..\n");
+        DEBUGMSG("- Starting the service..");
         printf("* Trying to start the service.. ");
 
         if(!startServ(globalConfiguration.serviceName))
         {
             DisplayKo();
             printf("\t /!\\ Cannot launch the service.\n\n");
-            DEBUGMSG("- Fail to start the service, GetLastError() = %d.\n", GetLastError());
+            ERRORMSG("Fail to start the service");
 
             ret = EXIT_FAILURE;
             goto clean;
@@ -129,7 +128,7 @@ int main(int argc, char* argv[])
     }
     else
     {
-        DEBUGMSG("- Service already registered.\n")
+        DEBUGMSG("- Service already registered.\n");
         printf("* Service already registered, let me start it.. ");
         status = StartServiceCtrlDispatcher(servTableEntry);
         if(status == FALSE)
@@ -141,7 +140,7 @@ int main(int argc, char* argv[])
                 {
                     DisplayKo();
                     printf("\t /!\\ Cannot launch the service.\n\n");
-                    DEBUGMSG("- Fail to start the service, GetLastError() = %d.\n", GetLastError());
+                    ERRORMSG("Fail to start the service");
 
                     ret = EXIT_FAILURE;
                     goto clean;
@@ -153,7 +152,7 @@ int main(int argc, char* argv[])
             {
                 DisplayKo();
                 printf("\t /!\\ Cannot start the service.\n\n");
-                DEBUGMSG("- Fail to connect main thread to the service manager, GetLastError() = %d.\n", GetLastError());
+                ERRORMSG("Fail to connect main thread to the service manager");
 
                 ret = EXIT_FAILURE;
                 goto clean;
@@ -161,7 +160,7 @@ int main(int argc, char* argv[])
         }
     }
 
-    DEBUGMSG("\r\n");
+    DEBUGMSG("\n");
 
     clean:
     CloseDbgManager();

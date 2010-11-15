@@ -23,25 +23,41 @@
 #include <stdio.h>
 #include <windows.h>
 
+extern FILE *fpDbgManager;
+
+#define DbgMSG(...)                      \
+{                                        \
+    fprintf(fpDbgManager, __VA_ARGS__);  \
+    fflush(fpDbgManager);                \
+}
+
+#define FILE_LOG "j0llyDmp3r.log"
+
+#define ERRORMSG(...)                    \
+{                                        \
+    DbgMSG("[ERROR] ");                  \
+    DbgMSG(__VA_ARGS__);                 \
+    DbgMSG(" -> GetLastError() = %d.\n", GetLastError()); \
+}
+
+#define DEBUGMSG(...)             \
+{                                 \
+    DbgMSG("[DEBUG] ");           \
+    DbgMSG(__VA_ARGS__);          \
+    fprintf(fpDbgManager, "\n");  \
+                                  \
+}
+
+#define CloseDbgManager()         \
+    fclose(fpDbgManager)
+
 #ifdef DEBUG
-        #define FILE_LOG "j0llyDmp3r.log"
-        extern FILE *fpDbgManager;
-
-        #define DEBUGMSG(...)                    \
-        {                                        \
-            fprintf(fpDbgManager, __VA_ARGS__);  \
-            fflush(fpDbgManager);                \
-        }
-
-        #define InitDbgManager()                 \
-            initDbgManager()
-
-        #define CloseDbgManager()                \
-            fclose(fpDbgManager)
+    #define TRACEMSG()                       \
+    {                                        \
+        DbgMSG("[TRACE] %s():%d.\n", __FUNCTION__, __LINE__); \
+    }
 #else
-    #define DEBUGMSG(...) /* void */
-    #define InitDbgManager() /* void */
-    #define CloseDbgManager() /* void */
+    #define TRACEMSG(...) /* void */
 #endif
 
 #ifdef __cplusplus

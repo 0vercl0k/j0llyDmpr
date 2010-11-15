@@ -37,10 +37,12 @@ DWORD servInstall(PCONFIG pConf)
     UCHAR path[MAX_PATH] = {0};
     DWORD ret = 0, status = 1;
 
+    TRACEMSG();
+
     ret = GetModuleFileName(NULL, (PCHAR)path, MAX_PATH);
     if(ret == 0)
     {
-        DEBUGMSG("- Fail to retrieve binary full-qualified path, GetLastError() = %d.\n", GetLastError());
+        ERRORMSG("Fail to retrieve binary full-qualified path");
         return 0;
     }
 
@@ -52,7 +54,7 @@ DWORD servInstall(PCONFIG pConf)
 
     if(hScManager == NULL)
     {
-        DEBUGMSG("- Fail to obtain a handle to the service manager, GetLastError() = %d.\n", GetLastError());
+        ERRORMSG("Fail to obtain a handle to the service manager");
         return 0;
     }
 
@@ -74,7 +76,7 @@ DWORD servInstall(PCONFIG pConf)
 
     if(hService == NULL)
     {
-        DEBUGMSG("- Fail to create the service, GetLastError() = %d.\n", GetLastError());
+        ERRORMSG("- Fail to create the service, GetLastError() = %d.", GetLastError());
         status = 0;
         goto clean;
     }
@@ -84,11 +86,13 @@ DWORD servInstall(PCONFIG pConf)
         &servDesc
     );
 
-    DEBUGMSG("| Service is created.\n");
+    DEBUGMSG("| Service is created.");
     CloseServiceHandle(hService);
 
     clean:
+
     CloseServiceHandle(hScManager);
+
     return status;
 }
 
@@ -96,6 +100,8 @@ DWORD startServ(const char* pName)
 {
     HANDLE hServMngr = NULL, hServ = NULL;
     DWORD ret = 1;
+
+    TRACEMSG();
 
     hServMngr = OpenSCManager(NULL,
         NULL,
@@ -144,7 +150,8 @@ VOID WINAPI servMain(DWORD dwArgc, LPTSTR *lpszArgv)
     HANDLE hLib = NULL;
     BOOL ret = TRUE;
 
-    DEBUGMSG("| Main thread linked successfully to the service manager.\n");
+    TRACEMSG();
+    DEBUGMSG("| Main thread linked successfully to the service manager.");
 
     initUsbStuff(pConf->outputPath);
 
@@ -152,11 +159,11 @@ VOID WINAPI servMain(DWORD dwArgc, LPTSTR *lpszArgv)
 
     if(hServStatus == 0)
     {
-        DEBUGMSG("- Fail to register the control handler function, GetLastError() = %d.\n", GetLastError());
+        ERRORMSG("Fail to register the control handler function, GetLastError() = %d.", GetLastError());
         return;
     }
 
-    DEBUGMSG("| Control handler function is registered.\n");
+    DEBUGMSG("| Control handler function is registered.");
 
     servStatus.dwServiceType	  = SERVICE_WIN32_OWN_PROCESS;
 	servStatus.dwCurrentState	  = SERVICE_RUNNING;
@@ -165,13 +172,13 @@ VOID WINAPI servMain(DWORD dwArgc, LPTSTR *lpszArgv)
     ret = SetServiceStatus(hServStatus, &servStatus);
     if(ret == 0)
     {
-        DEBUGMSG("- Fail to inform service manager about service status, GetLastError() = %d.\n", GetLastError());
+        ERRORMSG("Fail to inform service manager about service status");
         return;
     }
 
     /** Well, now we can doing interesting stuff !1! **/
 
-    DEBUGMSG("| Starting initialization..\n");
+    DEBUGMSG("| Starting initialization..");
 
     hLib = LoadLibrary("user32.dll");
     RegisterDeviceNotificationA = (REGISTERDEVICENOT)GetProcAddress(hLib, "RegisterDeviceNotificationA");
@@ -179,11 +186,11 @@ VOID WINAPI servMain(DWORD dwArgc, LPTSTR *lpszArgv)
 
     if(hLib == NULL || RegisterDeviceNotificationA == NULL || UnregisterDeviceNotification == NULL)
     {
-        DEBUGMSG("- Fail to load user32.dlls.\n");
+        ERRORMSG("Fail to load user32.dll");
         goto clean;
     }
 
-    DEBUGMSG("| APIs addresses are resolved.\n");
+    DEBUGMSG("| APIs addresses are resolved.");
 
     notifFilter.dbcc_size = sizeof(DEV_BROADCAST_DEVICEINTERFACE);
     notifFilter.dbcc_devicetype = DBT_DEVTYP_DEVICEINTERFACE;
@@ -198,11 +205,11 @@ VOID WINAPI servMain(DWORD dwArgc, LPTSTR *lpszArgv)
 
     if(hNotification == NULL)
     {
-        DEBUGMSG("- Fail to register a devices notifications, GetLastError() = %d.\n", GetLastError());
+        ERRORMSG("Fail to register devices notifications");
         goto clean;
     }
 
-    DEBUGMSG("| Devices notifications registered.\n");
+    DEBUGMSG("| Devices notifications registered.");
 
 
     while(isDone == FALSE)
@@ -216,13 +223,13 @@ VOID WINAPI servMain(DWORD dwArgc, LPTSTR *lpszArgv)
     if(hNotification != NULL)
         UnregisterDeviceNotification(hNotification);
 
-    DEBUGMSG("| Stopping the service..\n");
+    DEBUGMSG("| Stopping the service..");
     servStatus.dwCurrentState = SERVICE_STOPPED;
 
     ret = SetServiceStatus(hServStatus, &servStatus);
     if(ret == 0)
     {
-        DEBUGMSG("- Fail to inform service manager about service status, GetLastError() = %d.\n", GetLastError());
+        ERRORMSG("Fail to inform service manager about service status");
         return;
     }
     return;
@@ -235,12 +242,14 @@ DWORD WINAPI ctrlHandler(DWORD fdwControl, DWORD evtype, PVOID evdata, PVOID Con
     DWORD tmp = GetLogicalDrives();
     UCHAR str[4] = {0, ':', '\\', 0}, letter = 0, ret = 0;
 
+    TRACEMSG();
+
     switch(fdwControl)
     {
         case SERVICE_CONTROL_STOP :
         case SERVICE_CONTROL_SHUTDOWN :
         {
-            DEBUGMSG("! Receive a SERVICE_CONTROL_STOP/SHUTDOWN event.\n");
+            DEBUGMSG("! Receive a SERVICE_CONTROL_STOP/SHUTDOWN event.");
             isDone = TRUE;
             break;
         }
@@ -249,7 +258,7 @@ DWORD WINAPI ctrlHandler(DWORD fdwControl, DWORD evtype, PVOID evdata, PVOID Con
         {
             if(logicalVolsPrec != tmp)
             {
-                DEBUGMSG("! Receive a SERVICE_CONTROL_DEVICEEVENT event\n", evtype);
+                DEBUGMSG("! Receive a SERVICE_CONTROL_DEVICEEVENT event.", evtype);
                 if(evtype == DBT_DEVICEREMOVECOMPLETE)
                 {
                     DEBUGMSG("x Usb key is removed completely.\n");
@@ -258,11 +267,11 @@ DWORD WINAPI ctrlHandler(DWORD fdwControl, DWORD evtype, PVOID evdata, PVOID Con
                 if(evtype == DBT_DEVICEARRIVAL)
                 {
                     letter = GetLetterOfNewVolume(logicalVolsPrec, tmp);
-                    DEBUGMSG("x Usb key is plugged-in, browse it in '%c:\\\\'.\n", letter);
+                    DEBUGMSG("x Usb key is plugged-in, browse it in '%c:\\\\'.", letter);
                     str[0] = letter;
 
                     ret = DumpAndSearchInteresstingFiles(str, 0, pConf);
-                    DEBUGMSG("x DumpAndSearchInteresstingFiles return '%d'.\n", ret);
+                    DEBUGMSG("x DumpAndSearchInteresstingFiles return '%d'.", ret);
                 }
 
                 logicalVolsPrec = tmp;
@@ -273,7 +282,7 @@ DWORD WINAPI ctrlHandler(DWORD fdwControl, DWORD evtype, PVOID evdata, PVOID Con
 
         default :
         {
-            DEBUGMSG("! Receive an event unhandled by this service.\n");
+            DEBUGMSG("! Receive an event unhandled by this service.");
         }
     }
 

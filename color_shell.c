@@ -18,17 +18,20 @@
  *   along with J0llyDmpr. If not, see <http://www.gnu.org/licenses/>.
 **/
 #include "color_shell.h"
+#include "debug.h"
 #include <windows.h>
 
 HANDLE hStdOut = NULL;
 
 VOID initColor()
 {
+    TRACEMSG();
     hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
 }
 
 VOID setColor(const COLOR fg)
 {
+    TRACEMSG();
     if(hStdOut == NULL)
         return;
 
@@ -40,6 +43,7 @@ VOID setColor(const COLOR fg)
 
 VOID closeColor()
 {
+    TRACEMSG();
     if(hStdOut == NULL)
         return;
 

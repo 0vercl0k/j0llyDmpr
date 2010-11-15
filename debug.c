@@ -21,9 +21,7 @@
 
 #include <string.h>
 
-#ifdef DEBUG
-        FILE *fpDbgManager = NULL;
-#endif
+FILE *fpDbgManager = NULL;
 
 UCHAR initDbgManager()
 {
@@ -49,9 +47,6 @@ UCHAR initDbgManager()
     if(ret == FALSE)
         return 0;
 
-#ifdef DEBUG
     fpDbgManager = fopen(FILE_LOG, "a");
     return (fpDbgManager == NULL) ? 0 : 1;
-#endif
-    return 1;
 }

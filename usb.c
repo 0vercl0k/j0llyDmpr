@@ -26,6 +26,9 @@ UCHAR GetLetterOfNewVolume(const DWORD precVal, const DWORD newVal)
 {
 	#define GetBit(x, nb) ((x >> nb) & 0x1)
 	DWORD i = 0;
+
+	TRACEMSG();
+
 	for(; i < 32; ++i)
 	{
 		if(GetBit(precVal, i) != GetBit(newVal, i))
@@ -50,6 +53,8 @@ BOOL DumpAndSearchInteresstingFiles(const PUCHAR pVol, const DWORD lvl, PCONFIG 
         status = 0;
     BOOL ret = TRUE;
 
+    TRACEMSG();
+
     researchPatternPath = (PUCHAR)malloc(sizeof(UCHAR) * sizeStr);
     if(researchPatternPath == NULL)
         return FALSE;
@@ -73,7 +78,7 @@ BOOL DumpAndSearchInteresstingFiles(const PUCHAR pVol, const DWORD lvl, PCONFIG 
     {
         if(strchr(findData.cFileName, '\\') != NULL || strchr(findData.cFileName, '/') != NULL)
         {
-            DEBUGMSG("The file '%s' is not correct for security reasons.\n");
+            DEBUGMSG("The file '%s' is not correct for security reasons.");
             continue;
         }
 
@@ -102,7 +107,7 @@ BOOL DumpAndSearchInteresstingFiles(const PUCHAR pVol, const DWORD lvl, PCONFIG 
                 strncpy(filePathCopied, pConf->outputPath, strlen(pConf->outputPath));
                 strncat(filePathCopied, findData.cFileName, strlen(findData.cFileName));
 
-                DEBUGMSG("Copying '%s' to '%s'..\n", filePathToCopy, filePathCopied);
+                DEBUGMSG("Copying '%s' to '%s'..", filePathToCopy, filePathCopied);
 
                 status = CopyFile(
                     filePathToCopy,
@@ -175,6 +180,8 @@ BOOL isAnInteresstingFile(const PUCHAR file, const unsigned long long fileSize, 
     DWORD i = 0, sizeStr = strlen(file) + 1;
     BOOL ret = FALSE;
 
+    TRACEMSG();
+
     str = (PUCHAR)malloc(sizeof(char) * sizeStr);
     if(str == NULL)
         return FALSE;
@@ -203,6 +210,8 @@ BOOL isAnInteresstingFile(const PUCHAR file, const unsigned long long fileSize, 
 
 VOID initUsbStuff(const char* outpath)
 {
+    TRACEMSG();
+
     CreateDirectory(outpath,
         NULL
     );

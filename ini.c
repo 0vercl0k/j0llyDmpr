@@ -43,8 +43,9 @@ BOOL initConfigurationStructure(PCONFIG pConf)
         DEFAULT_RECURSE_MAX_LEVEL
     };
 
+    TRACEMSG();
     ZeroMemory(pConf, sizeof(CONFIG));
-    DEBUGMSG("| Parsing INI configuration file..\n");
+    DEBUGMSG("| Parsing INI configuration file..");
 
     for(; section[i][0] != NULL && section[i][1] != NULL; ++i)
     {
@@ -58,7 +59,7 @@ BOOL initConfigurationStructure(PCONFIG pConf)
 
         if(strcmp(tmp, "") == 0)
         {
-            DEBUGMSG("'%s.%s'  is equal to \"\", this is not allowed.\n", section[i][0], section[i][1]);
+            ERRORMSG("'%s.%s'  is equal to \"\", this is not allowed", section[i][0], section[i][1]);
             goto error;
         }
 
@@ -66,7 +67,7 @@ BOOL initConfigurationStructure(PCONFIG pConf)
         *(ptrStr[i]) = (char*)malloc(sizeof(char) * sizeStr);
         if(*(ptrStr[i]) == NULL)
         {
-            DEBUGMSG("- Can't allocate memory.\n");
+            DEBUGMSG("- Can't allocate memory.");
             goto error;
         }
 
@@ -81,7 +82,7 @@ BOOL initConfigurationStructure(PCONFIG pConf)
     tmp2 = NULL;
     if(pConf->max_size == 0)
     {
-        DEBUGMSG("%s.max_size has a value not allowed.\n", MAIN_CONFIGURATION_SECTION);
+        ERRORMSG("%s.max_size has a value not allowed", MAIN_CONFIGURATION_SECTION);
         goto error;
     }
 
@@ -91,13 +92,13 @@ BOOL initConfigurationStructure(PCONFIG pConf)
     tmp2 = NULL;
     if(pConf->recurse_max == 0)
     {
-        DEBUGMSG("%s.recurse_max has a value not allowed.\n", MAIN_CONFIGURATION_SECTION);
+        ERRORMSG("%s.recurse_max has a value not allowed", MAIN_CONFIGURATION_SECTION);
         goto error;
     }
 
     if(pConf->outputPath[strlen(pConf->outputPath) - 1] != '\\')
     {
-        DEBUGMSG("Please append the character '\\' at the end of %s.output_dir parameter.\n", MAIN_CONFIGURATION_SECTION);
+        ERRORMSG("Please append the character '\\' at the end of %s.output_dir parameter", MAIN_CONFIGURATION_SECTION);
         goto error;
     }
 
@@ -113,7 +114,7 @@ BOOL initConfigurationStructure(PCONFIG pConf)
     pConf->patterns = (char**)malloc(sizeof(char*));
     if(pConf->patterns == NULL)
     {
-        DEBUGMSG("- Can't allocate memory for pattern table.\n");
+        ERRORMSG("Can't allocate memory for pattern table");
         goto error;
     }
 
@@ -128,7 +129,7 @@ BOOL initConfigurationStructure(PCONFIG pConf)
         pConf->patterns[pConf->nbPattern] = (char*)malloc(sizeof(char) * sizeStr);
         if(pConf->patterns[pConf->nbPattern] == NULL)
         {
-            DEBUGMSG("- Can't allocate memory for the pattern rule.\n");
+            ERRORMSG("Can't allocate memory for the pattern rule");
             goto error;
         }
 
@@ -148,12 +149,12 @@ BOOL initConfigurationStructure(PCONFIG pConf)
 
         if(strcmp(tmp, "") == 0)
         {
-            DEBUGMSG("'main_configuration.patterns'  is equal to \"\", this is not allowed.\n");
+            ERRORMSG("'main_configuration.patterns'  is equal to \"\", this is not allowed");
             goto error;
         }
         else if(tmp[0] == ';')
         {
-            DEBUGMSG("'main_configuration.patterns'  contains only the separator.\n");
+            ERRORMSG("'main_configuration.patterns'  contains only the separator");
             goto error;
         }
         else
@@ -161,7 +162,7 @@ BOOL initConfigurationStructure(PCONFIG pConf)
             pConf->patterns[0] = (char*)malloc(sizeof(char) * sizeStr);
             if(pConf->patterns[0] == NULL)
             {
-                DEBUGMSG("- Can't allocate memory for the pattern rule.\n");
+                ERRORMSG("Can't allocate memory for the pattern rule");
                 goto error;
             }
 
@@ -204,10 +205,12 @@ BOOL createConfigurationFile()
 {
     FILE *fp = NULL;
 
+    TRACEMSG();
+
     fp = fopen("./config.ini", "w");
     if(fp == NULL)
     {
-        DEBUGMSG("Can't write config.ini file.\n");
+        ERRORMSG("Can't write config.ini file");
         return FALSE;
     }
 
