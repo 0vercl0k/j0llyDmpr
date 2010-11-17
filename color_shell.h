@@ -52,6 +52,8 @@ VOID initColor();
 /* # Set shell color at 'fg' color */
 VOID setColor(const COLOR fg);
 
+/* # Back to the reality */
+VOID closeColor();
 
 #ifdef __cplusplus
 }

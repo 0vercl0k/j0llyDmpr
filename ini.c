@@ -33,7 +33,7 @@ BOOL initConfigurationStructure(PCONFIG pConf)
         {NULL, NULL}
     },
     **ptrStr[] = {
-        &pConf->serviceName, &pConf->serviceDesc, &pConf->outputPath, &pConf->max_size, &pConf->recurse_max
+        (PCHAR*)&pConf->serviceName, (PCHAR*)&pConf->serviceDesc, (PCHAR*)&pConf->outputPath, (PCHAR*)&pConf->max_size, (PCHAR*)&pConf->recurse_max
     },
     *defaultValues[] = {
         DEFAULT_SERVICE_NAME,
@@ -220,8 +220,8 @@ BOOL createConfigurationFile()
 
     fprintf(fp, "[%s]\n", MAIN_CONFIGURATION_SECTION);
     fprintf(fp, "patterns=\"%s\"\n", DEFAULT_PATTERN);
-    fprintf(fp, "max_size=%u\n", DEFAULT_FILE_MAX_SIZE);
-    fprintf(fp, "recurse_max=%u\n", DEFAULT_RECURSE_MAX_LEVEL);
+    fprintf(fp, "max_size=%d\n", atoi(DEFAULT_FILE_MAX_SIZE));
+    fprintf(fp, "recurse_max=%d\n", atoi(DEFAULT_RECURSE_MAX_LEVEL));
     fprintf(fp, "output_dir=\"%s\"\n", DEFAULT_OUTPUT_DIR);
 
     fclose(fp);

@@ -25,9 +25,11 @@
 
 /** Preprocessor stuff **/
 
+#ifndef _MSC_VER
 #define DBT_DEVTYP_DEVICEINTERFACE 0x5
 #define DEVICE_NOTIFY_SERVICE_HANDLE  0x1
 #define DEVICE_NOTIFY_ALL_INTERFACE_CLASSES 0x4
+#endif
 
 /** Typedefs / Structures defintions **/
 
@@ -35,7 +37,7 @@
 typedef HANDLE (*REGISTERDEVICENOT)(HANDLE, LPVOID, DWORD);
 typedef BOOL (*UNREGISTERDEVICENOT)(HANDLE);
 
-
+#ifndef _MSC_VER
 typedef struct
 {
     DWORD dbcc_size;
@@ -44,7 +46,7 @@ typedef struct
     GUID  dbcc_classguid;
     TCHAR dbcc_name[1];
 } DEV_BROADCAST_DEVICEINTERFACE, *PDEV_BROADCAST_DEVICEINTERFACE;
-
+#endif
 
 /** Prototypes **/
 
