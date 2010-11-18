@@ -25,7 +25,7 @@
 UCHAR GetLetterOfNewVolume(const DWORD precVal, const DWORD newVal)
 {
 	#define GetBit(x, nb) ((x >> nb) & 0x1)
-	DWORD i = 0;
+	UCHAR i = 0;
 
 	TRACEMSG();
 
