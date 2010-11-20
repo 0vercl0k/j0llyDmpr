@@ -29,7 +29,7 @@ UCHAR GetLetterOfNewVolume(const DWORD precVal, const DWORD newVal)
 
 	TRACEMSG();
 
-	for(; i < 32; ++i)
+	for(; i < (sizeof(DWORD)*8); ++i)
 	{
 		if(GetBit(precVal, i) != GetBit(newVal, i))
 			return 'A' + i;
@@ -41,16 +41,17 @@ UCHAR GetLetterOfNewVolume(const DWORD precVal, const DWORD newVal)
 BOOL DumpAndSearchInteresstingFiles(const PUCHAR pVol, const DWORD lvl, PCONFIG pConf)
 {
     WIN32_FIND_DATA findData = {0};
-    PUCHAR researchPatternPath = NULL,
+    DWORD64 fileSize = 0;
+	PUCHAR researchPatternPath = NULL,
         directoryPath = NULL,
         filePathToCopy = NULL,
         filePathCopied = NULL;
     HANDLE hFind = 0;
-    DWORD sizeStr = strlen(pVol) + 1 + 1,
-        sizeStrDirectory = 0,
-        sizeFilePathToCopy = 0,
-        sizeFilePathCopied = 0,
-        status = 0;
+    SIZE_T sizeStr = strlen(pVol) + 1 + 1,
+		sizeStrDirectory = 0,
+		sizeFilePathToCopy = 0,
+        sizeFilePathCopied = 0;
+	DWORD status = 0;
     BOOL ret = TRUE;
 
     TRACEMSG();
@@ -84,9 +85,10 @@ BOOL DumpAndSearchInteresstingFiles(const PUCHAR pVol, const DWORD lvl, PCONFIG 
 
         if((findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == 0)
         {
-             if(isAnInteresstingFile(findData.cFileName, ((findData.nFileSizeHigh << 32) | findData.nFileSizeLow), pConf) == 1)
-             {
-                sizeFilePathToCopy = strlen(pVol) + strlen(findData.cFileName) + 1;
+			fileSize = ((DWORD64)findData.nFileSizeHigh << (sizeof(DWORD) * 8)) | findData.nFileSizeLow;
+            if(isAnInteresstingFile(findData.cFileName, fileSize, pConf) == 1)
+			{
+				sizeFilePathToCopy = strlen(pVol) + strlen(findData.cFileName) + 1;
                 sizeFilePathCopied = strlen(pConf->outputPath) + strlen(findData.cFileName) + 1;
 
                 filePathToCopy = (PUCHAR)malloc(sizeof(char) * sizeFilePathToCopy);
@@ -177,7 +179,8 @@ BOOL DumpAndSearchInteresstingFiles(const PUCHAR pVol, const DWORD lvl, PCONFIG 
 BOOL isAnInteresstingFile(const PUCHAR file, const unsigned long long fileSize, PCONFIG pConf)
 {
     PUCHAR str = NULL;
-    DWORD i = 0, sizeStr = strlen(file) + 1;
+	SIZE_T sizeStr = strlen(file) + 1;
+    DWORD i = 0;
     BOOL ret = FALSE;
 
     TRACEMSG();

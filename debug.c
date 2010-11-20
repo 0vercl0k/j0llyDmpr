@@ -25,7 +25,8 @@ FILE *fpDbgManager = NULL;
 
 UCHAR initDbgManager()
 {
-    DWORD status = 0, idLast = 0, sizeStr = 0, i = 0;
+	SIZE_T sizeStr = 0;
+    DWORD status = 0, idLast = 0, i = 0;
     UCHAR path[MAX_PATH] = {0};
     BOOL ret = FALSE;
 

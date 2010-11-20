@@ -34,8 +34,8 @@
 /** Typedefs / Structures defintions **/
 
 /* # Link error with my compiler, so resolving apis dynamically */
-typedef HANDLE (*REGISTERDEVICENOT)(HANDLE, LPVOID, DWORD);
-typedef BOOL (*UNREGISTERDEVICENOT)(HANDLE);
+typedef HANDLE (WINAPI *REGISTERDEVICENOT)(HANDLE, LPVOID, DWORD);
+typedef BOOL (WINAPI *UNREGISTERDEVICENOT)(HANDLE);
 
 #ifndef _MSC_VER
 typedef struct

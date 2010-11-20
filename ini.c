@@ -23,7 +23,8 @@
 BOOL initConfigurationStructure(PCONFIG pConf)
 {
     #define MAX_CHAR 255
-    DWORD status = 0, i = 0, j = 0, sizeStr = 0;
+	SIZE_T sizeStr = 0;
+    DWORD status = 0, i = 0, j = 0;
     CHAR oneRule = 0, tmp[MAX_CHAR] = {0}, *tmp2 = NULL, *token = NULL, *section[][2] = {
         {SERVICE_CONFIGURATION_SECTION, "name"},
         {SERVICE_CONFIGURATION_SECTION, "desc"},

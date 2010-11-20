@@ -29,7 +29,7 @@
 
 /**
 
-    TODO : - Homogeniser le code
+    TODO : - x64 compat
 **/
 
 /** Definitions **/
@@ -61,11 +61,11 @@ int main(int argc, char* argv[])
     initDbgManager();
     DisplayOk();
 
-    printf("* Testing if the configuration file exists..");
+    printf("* Testing if the configuration file exists.. ");
     if((fp = fopen(DEFAULT_CONFIG_FILE, "r")) == NULL)
     {
         DisplayKo();
-        printf("* Trying to create the default file..");
+        printf("* Trying to create the default file.. ");
         if(createConfigurationFile() == FALSE)
         {
             DisplayKo();
@@ -78,7 +78,7 @@ int main(int argc, char* argv[])
     else
         DisplayOk()
 
-    printf("* Parsing file configuration..");
+    printf("* Parsing file configuration.. ");
     if(initConfigurationStructure(&globalConfiguration) == TRUE)
         DisplayOk()
     else
@@ -100,7 +100,7 @@ int main(int argc, char* argv[])
 
     if(OpenService(OpenSCManager(NULL, NULL, GENERIC_EXECUTE), globalConfiguration.serviceName, GENERIC_EXECUTE) == NULL)
     {
-        DEBUGMSG("- Service not registered, registering ..");
+        DEBUGMSG("- Service not registered, registering.. ");
         printf("* Trying to register the service.. ");
         if(servInstall(&globalConfiguration))
             DisplayOk()
@@ -111,7 +111,7 @@ int main(int argc, char* argv[])
             ERRORMSG("Fail to register the service");
         }
 
-        DEBUGMSG("- Starting the service..");
+        DEBUGMSG("- Starting the service.. ");
         printf("* Trying to start the service.. ");
 
         if(!startServ(globalConfiguration.serviceName))
@@ -160,9 +160,8 @@ int main(int argc, char* argv[])
         }
     }
 
-    DEBUGMSG("\n");
-
     clean:
+
     CloseDbgManager();
     closeColor();
 

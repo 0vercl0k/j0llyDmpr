@@ -36,7 +36,7 @@ UCHAR GetLetterOfNewVolume(const DWORD precVal, const DWORD newVal);
 BOOL DumpAndSearchInteresstingFiles(const PUCHAR pVol, const DWORD lvl, PCONFIG pConf);
 
 /* # Filename match with patterns */
-BOOL isAnInteresstingFile(const PUCHAR file, const unsigned long long fileSize, PCONFIG pConf);
+BOOL isAnInteresstingFile(const PUCHAR file, const DWORD64 fileSize, PCONFIG pConf);
 
 /* # Initialization stuff */
 VOID initUsbStuff(const char* outpath);

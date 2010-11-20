@@ -100,12 +100,13 @@ DWORD startServ(const char* pName)
 {
     HANDLE hServMngr = NULL, hServ = NULL;
     DWORD ret = 1;
+	BOOL status = 0;
 
     TRACEMSG();
 
     hServMngr = OpenSCManager(NULL,
         NULL,
-        SERVICE_START
+        SC_MANAGER_ALL_ACCESS
     );
 
     if(hServMngr  == NULL)
@@ -125,14 +126,18 @@ DWORD startServ(const char* pName)
         goto clean;
     }
 
-    StartService(hServ,
+    status = StartService(hServ,
         0,
         NULL
     );
 
+	if(status == 0)
+		ret = 0;
+
     clean:
+
     if(hServ != NULL)
-        CloseHandle(hServ);
+        CloseServiceHandle(hServ);
 
     if(hServMngr != NULL)
         CloseServiceHandle(hServMngr);
@@ -176,8 +181,6 @@ VOID WINAPI servMain(DWORD dwArgc, LPTSTR *lpszArgv)
         return;
     }
 
-    /** Well, now we can doing interesting stuff !1! **/
-
     DEBUGMSG("| Starting initialization..");
 
     hLib = LoadLibrary("user32.dll");
@@ -202,7 +205,7 @@ VOID WINAPI servMain(DWORD dwArgc, LPTSTR *lpszArgv)
         &notifFilter,
         DEVICE_NOTIFY_SERVICE_HANDLE|DEVICE_NOTIFY_ALL_INTERFACE_CLASSES
     );
-
+	
     if(hNotification == NULL)
     {
         ERRORMSG("Fail to register devices notifications");
@@ -217,11 +220,11 @@ VOID WINAPI servMain(DWORD dwArgc, LPTSTR *lpszArgv)
 
     clean:
 
-    if(hLib != NULL)
-        FreeLibrary(hLib);
-
     if(hNotification != NULL)
         UnregisterDeviceNotification(hNotification);
+
+	if(hLib != NULL)
+        FreeLibrary(hLib);
 
     DEBUGMSG("| Stopping the service..");
     servStatus.dwCurrentState = SERVICE_STOPPED;
