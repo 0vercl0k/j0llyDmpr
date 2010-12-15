@@ -27,11 +27,6 @@
 #include "ini.h"
 #include "global.h"
 
-/**
-
-    TODO : - x64 compat
-**/
-
 /** Definitions **/
 
 int main(int argc, char* argv[])
